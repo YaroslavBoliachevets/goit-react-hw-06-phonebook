@@ -1,30 +1,12 @@
-// import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {DeleteButton} from './ContactList .module';
-
-// class ContactList extends Component {
-//   render() {
-//     return (
-//       <>
-//         <ul>
-//           {this.props.contacts.map(contact => {
-//             return (
-//               <li key={contact.id}>
-//                 {contact.name}: {contact.number}
-//                 <DeleteButton type="button" onClick={() => this.props.onDeleteContact(contact.id)}>delete</DeleteButton>
-//               </li>
-//             );
-//           })}
-//         </ul>
-//       </>
-//     );
-//   }
-// }
+import {useSelector, useDispatch} from 'react-redux';
+import {deleteContact} from '../../redux/store';
 
 function ContactList(options) {
-  const {contacts, onDeleteContact} = options;
-  console.log('contacts', contacts);
-  console.log('options', options);
+  // const { onDeleteContact} = options;
+  const contacts = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -33,7 +15,7 @@ function ContactList(options) {
           return (
             <li key={contact.id}>
               {contact.name}: {contact.number}
-              <DeleteButton type="button" onClick={() => onDeleteContact(contact.id)}>delete</DeleteButton>
+              <DeleteButton type="button" onClick={() => dispatch(deleteContact(contact.id))}>delete</DeleteButton>
             </li>
           );
         })}
