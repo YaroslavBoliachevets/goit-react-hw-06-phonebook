@@ -1,17 +1,22 @@
-import React, { useState, useEffect} from 'react';
+import React, { useEffect} from 'react';
 import { nanoid } from 'nanoid';
 import ContactForm  from './contactForm';
 import ContactList  from './contactList';
 import Filter from './filter';
+import {useSelector, useDispatch } from 'react-redux';
+import { filterContacts } from 'redux/store';
 
 
 export default function App() {
-  const [filter, setFilter] = useState('');
+  // const [filter, setFilter] = useState('');
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.filter);
+  const contacts = useSelector(state=> state.contacts);
 
-  const [contacts, setContacts] = useState(localStorage.getItem('contacts') 
-  ? JSON.parse(localStorage.getItem('contacts')) 
-  : []
-  );
+  // const [contacts, setContacts] = useState(localStorage.getItem('contacts') 
+  // ? JSON.parse(localStorage.getItem('contacts')) 
+  // : []
+  // );
 
 
   useEffect(()=> {
@@ -19,7 +24,7 @@ export default function App() {
   }, [contacts]);
 
   const addContact = (name, number) => {
-    if((contacts.find(contact => (contact.name.includes(name))))) return alert(`${name} is already in contacts.`);
+    // if((contacts.find(contact => (contact.name.includes(name))))) return alert(`${name} is already in contacts.`);
 
     const contact = {
       id: nanoid(),
@@ -27,25 +32,17 @@ export default function App() {
       number,
     };
     
-    setContacts(prevState => ([contact, ...prevState]));
+    // setContacts(prevState => ([contact, ...prevState]));
   };
 
-  const deleteContact = id => {
-    setContacts(prevState => (prevState.filter(contact => contact.id !== id)))
-    // this.setState(p => ({
-    //   contacts: p.contacts.filter(contact => contact.id !== id)
-    // }))
-
-    // setContacts(prevState => (prevState.filter(contact => contact.id !== id)))
-  }
 
   const changeFilter = event => {
     const {value} = event.currentTarget;
-    setFilter(value);
+    dispatch(filterContacts(value));
   }
 
 const visibleContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
-
+// console.log("contacts", contacts, "filter", filter, "visibleContacts", visibleContacts);
 return (
   <>
     <h1>Phonebook</h1>
@@ -53,7 +50,7 @@ return (
 
       <h2>Contacts</h2>
       <Filter value={filter} onChange={changeFilter}/>
-      <ContactList  contacts={visibleContacts} onDeleteContact={deleteContact} />
+      <ContactList  contacts={visibleContacts} />
   </>
 );
 }

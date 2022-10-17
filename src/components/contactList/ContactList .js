@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import {DeleteButton} from './ContactList .module';
-import {useSelector, useDispatch} from 'react-redux';
-import {deleteContact} from '../../redux/store';
+import { useDispatch} from 'react-redux';
+import {remove} from '../../redux/store';
 
-function ContactList(options) {
-  // const { onDeleteContact} = options;
-  const contacts = useSelector(state => state.contacts);
+function ContactList({contacts}) {
   const dispatch = useDispatch();
 
   return (
@@ -15,7 +13,7 @@ function ContactList(options) {
           return (
             <li key={contact.id}>
               {contact.name}: {contact.number}
-              <DeleteButton type="button" onClick={() => dispatch(deleteContact(contact.id))}>delete</DeleteButton>
+              <DeleteButton type="button" onClick={() => dispatch(remove(contact.id))}>delete</DeleteButton>
             </li>
           );
         })}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormInput, Label, Input } from './ContactForm .styled';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import {saveContact} from '../../redux/store';
+import {add} from '../../redux/store';
 
 function ContactForm({onSubmit}) {
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ function ContactForm({onSubmit}) {
         onChange={handleInputChange}
         id={telInputId}
       />
-      <button type="submit" onClick={() => {dispatch(saveContact(makeContact(inputName, inputNumber)))}}>Add to contact</button>
+      <button type="submit" onClick={() => {dispatch(add(makeContact(inputName, inputNumber)))}}>Add to contact</button>
     </FormInput>
   );
 }

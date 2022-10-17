@@ -1,31 +1,64 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { createAction, createReducer } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-// const increment = createAction('myValue/increment');
-// const decrement = createAction('myValue/decrement');
-export const saveContact= createAction('contact/saveContact');
-export const deleteContact = createAction('contact/deleteContact');
-export const filter = createAction('filter/inputFilter');
+// export const saveContact= createAction('contact/saveContact');
+// export const deleteContact = createAction('contact/deleteContact');
 
-// const myReducer = createReducer(10, {
-// [increment]: (state, action) => state + action.payload,
-// [decrement]: (state, action) => state - action.payload, 
-// [saveContact]: (state, action) => state,
+
+const contactsFormSlice = createSlice({
+  name: 'contacts',
+  initialState: [],
+  reducers: {
+    add(state, action) {
+      return [...state, action.payload];
+    },
+    remove(state, action) {
+      return state.filter(item => item.id !== action.payload);
+    },
+	// filterContacts(state, action) {return console.log(state, action.payload)}
+	// filterContacts(state, action) { return [...state].filter(contact => contact.name.toLowerCase().includes(action.payload.toLowerCase()))}
+  },
+});
+export const { add, remove } = contactsFormSlice.actions;
+
+// const contactsFilterSlice = createSlice({
+// 	name: 'filter',
+// 	initialState: [],
+// 	reducers: {
+// 	  filterContacts(state, action) {return console.log(action)}
+// 	},
+//   });
+//   export const {filterContacts} = contactsFilterSlice.actions;
+
+//   filterContacts(state, action) {return state.filter(contact => contact.name.toLowerCase().includes(action.payload.toLowerCase()))}
+
+const contactsFilterSlice = createSlice({
+  name: 'filter',
+  initialState: '',
+  reducers: {
+    filterContacts(state, action) {
+    return action.payload;
+    },
+  },
+});
+export const {filterContacts} = contactsFilterSlice.actions;
+// const inputReducer = createReducer([], {
+// 	[saveContact]: (state, action) => [...state, action.payload],
+// 	[deleteContact]: (state, action) => state.filter(item => item.id !== action.payload),
 // });
 
-const inputReducer = createReducer([], {
-	[saveContact]: (state, action) => [...state, action.payload],
-	[deleteContact]: (state, action) => state.filter(item => item.id !== action.payload),
-});
+// export const filter1 = createAction('filter/inputFilter');
 
-const contactsFilter = createReducer('', {
-	[filter]: (state, action) => state + action.payload,
-});
+// const contactsFilter = createReducer([], {
+// 	[filter1]: (state, action) => state.filter(contact => contact.name.toLowerCase().includes(action.payload.toLowerCase())) ,
+// });
+
+
+// export const { filter } = contactsFilterSlice.actions;
 
 export const store = configureStore({
   reducer: {
-	contacts: inputReducer,
-	filter: contactsFilter, 
+    contacts: contactsFormSlice.reducer,
+    filter: contactsFilterSlice.reducer,
   },
 });
-
