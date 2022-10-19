@@ -1,22 +1,28 @@
 import PropTypes from 'prop-types';
-import {DeleteButton} from './ContactList .module';
-import { useDispatch} from 'react-redux';
-import {remove} from '../../redux/store';
+import { DeleteButton } from './ContactList .module';
+import { useDispatch } from 'react-redux';
+import { remove } from '../../redux/slices/sliceContacts';
 
-function ContactList({contacts}) {
+function ContactList({ contacts }) {
   const dispatch = useDispatch();
 
   return (
     <>
       <ul>
-        {contacts && contacts.map(contact => {
-          return (
-            <li key={contact.id}>
-              {contact.name}: {contact.number}
-              <DeleteButton type="button" onClick={() => dispatch(remove(contact.id))}>delete</DeleteButton>
-            </li>
-          );
-        })}
+        {contacts &&
+          contacts.map(contact => {
+            return (
+              <li key={contact.id}>
+                {contact.name}: {contact.number}
+                <DeleteButton
+                  type="button"
+                  onClick={() => dispatch(remove(contact.id))}
+                >
+                  delete
+                </DeleteButton>
+              </li>
+            );
+          })}
       </ul>
     </>
   );
@@ -25,6 +31,6 @@ function ContactList({contacts}) {
 export default ContactList;
 
 ContactList.propTypes = {
-	contacts: PropTypes.array, 
-	onDeleteContact: PropTypes.func,
-}
+  contacts: PropTypes.array,
+  onDeleteContact: PropTypes.func,
+};
